@@ -60,7 +60,7 @@ POV orders that could not complete within the session: 36 of 56 ticker-size cell
 
 - Median depth proxy: US names absorb **409x** more USD per bp of 1-minute price move than MX names.
 - Median spread estimate: MX 2.37 bps vs US 1.81 bps (US estimates are upper bounds: at 1-min frequency Corwin-Schultz is inflated by intra-minute volatility; a 1-cent quote on AAPL is ~0.3 bps).
-- Only 49% of MX official daily volume is visible as executable continuous-session volume in yfinance bars (US: 56%): the rest is auctions, block crosses and, for BMV, the last trading hour that yfinance does not serve.
+- Only 49% of MX official daily volume is visible as executable continuous-session volume in yfinance bars (US: 56%): the rest is auctions, very large prints (likely block crosses) and, for BMV, the last trading hour that yfinance does not serve.
 - Same %ADV costs about the same in the square-root model when volatility is similar - but 5% of ADV is USD 2.3m in the median MX name vs USD 514m in the US.
 
 ## Q3. Intraday liquidity

@@ -1,5 +1,7 @@
 # Equity Execution & TCA Toolkit
 
+**Live dashboard: [equity-execution-tca-toolkit.streamlit.app](https://equity-execution-tca-toolkit.streamlit.app/)**
+
 Best execution, market microstructure and liquidity for **Mexican (BMV) and US equities/ETFs**,
 built in Python + SQL with a Streamlit dashboard. The toolkit measures liquidity from 1-minute
 bars, simulates TWAP / VWAP / POV / Implementation-Shortfall algorithms against real intraday
@@ -16,6 +18,19 @@ formula documented in the code. 36 unit tests check the formulas against hand-co
 ---
 
 ## Headline findings
+
+> **How to read the absolute cost levels.** The simulated costs are conservative, model-driven
+> upper bounds, not a forecast of what a desk would pay. Three assumptions push them up, and they
+> matter most in the most liquid names:
+> (i) the impact coefficient k = 0.7 is a literature prior from the 0.5-1 range, not calibrated to fills;
+> (ii) every child order crosses the spread, with no passive, midpoint or block fills;
+> (iii) participation is measured against the volume visible in 1-minute bars, only ~50-63% of ADV.
+> Real-world costs for 1% of ADV in names as liquid as IVV or AAPL are usually a few bps. The
+> pre-trade model at 1% ADV gives AAPL 11.1 / 8.3 bps and IVV 7.1 / 5.2 bps for k = 0.7 / 0.5
+> ([`results/impact_sensitivity.csv`](results/impact_sensitivity.csv)). The project is built to
+> support **relative** comparisons: Mexico vs US, algorithm vs algorithm, cost vs risk. Those
+> comparisons are largely insensitive to k, because the impact term scales proportionally with it
+> and changes levels rather than orderings.
 
 ### 1. Cost grows with the square root of size, and Mexico's problem is notional, not %ADV
 
@@ -36,9 +51,9 @@ Mean implementation shortfall of a full-session VWAP order (bps vs arrival, buys
 At the same %ADV, Banorte and Walmex cost about the same as Apple: the square-root law
 prices participation and volatility, not market cap. The difference is notional: 5% of ADV is
 **USD 2.3m in the median MX name vs USD 514m in the median US name**. NAFTRAC is the outlier:
-small orders are already expensive because the lit book trades in only ~23% of minutes. Its
-liquidity sits in creations/redemptions and block crosses, so a schedule that works every
-minute is the wrong tool for it.
+small orders are already expensive because the lit book trades in only ~23% of minutes. Most of
+its liquidity is probably off the continuous book (block crosses and creations/redemptions,
+which these bars don't show), so a schedule that works every minute is likely the wrong tool for it.
 
 ### 2. Mexican names are two to three orders of magnitude shallower, and half their volume isn't on the lit continuous book
 
@@ -47,9 +62,9 @@ minute is the wrong tool for it.
 * Depth proxy (USD traded per 1 bp of 1-minute price move): US names absorb **~409x** more
   than MX names (medians: USD 4.4m vs USD 10.7k per bp).
 * Only **~49%** of an MX name's official daily volume shows up as executable continuous-session
-  volume in the 1-minute bars. The rest is opening/closing auctions, block crosses (*cruces*,
-  prints > 25x the day's median minute) and, after the US DST switch, BMV's last trading hour,
-  which yfinance does not serve (see *Data quality*). An algo that targets "% of volume" in
+  volume in the 1-minute bars. The rest is opening/closing auctions, very large single-minute
+  prints (> 25x the day's median minute, most likely block crosses or *cruces*) and, after the US
+  DST switch, BMV's last trading hour, which yfinance does not serve (see *Data quality*). An algo that targets "% of volume" in
   Mexico is targeting a much smaller pool than ADV suggests.
 
 ### 3. Spreads are widest at the open; volume piles up into the close
@@ -123,7 +138,7 @@ One interface, `load_bars(ticker, source) -> timestamp, open, high, low, close, 
 |---|---|---|
 | BMV session moves with US daylight time (07:30-14:00 CDMX until 31 Oct, 08:30-15:00 after) | first bar 07:30 vs 08:30 | Session times are date-aware (`src/config.session_times`); intraday profiles use *minutes since open*, not clock time |
 | yfinance stops BMV bars at 13:59 in both regimes: the last hour + closing auction are missing after the switch | 330 vs 390 bars/day; MX lead-lag vs IVV peaks at 1 minute, not 60, so the timestamps are not shifted | Documented; profiles average each bucket only over days where it is observed; simulations stop at the last available bar |
-| Huge single-minute prints: block crosses at BMV, bad prints for AAPL (1-min volume sums to ~2x daily volume) | e.g. 17.9m AAPL shares in one minute | Prints > 25x the day's median minute are flagged `vol_outlier` and excluded from *executable* volume (kept in the data) |
+| Huge single-minute prints: likely block crosses at BMV and bad prints for AAPL (its 1-min volume sums to ~2x daily volume) | e.g. 17.9m AAPL shares in one minute | Prints > 25x the day's median minute are flagged `vol_outlier` and excluded from *executable* volume (kept in the data) |
 | Opening auction inside the first bar | first-bar volume spikes | Flagged `is_open_auction`; excluded from continuous metrics; its close is the arrival price |
 | NAFTRAC trades in ~23% of minutes | missing minutes | Minute grid filled with zero-volume bars; Roll instead of Corwin-Schultz |
 

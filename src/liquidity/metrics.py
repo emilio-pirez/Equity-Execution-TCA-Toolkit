@@ -139,7 +139,7 @@ def volume_coverage(bars: pd.DataFrame, daily: pd.DataFrame) -> pd.DataFrame:
     """Share of official daily volume visible in 1-minute bars, per day.
 
     coverage_all  = sum_t V_t / V_daily       (all 1m prints)
-    coverage_exec = sum_t exec_V_t / V_daily  (excluding auctions and block/bad prints)
+    coverage_exec = sum_t exec_V_t / V_daily  (excluding auctions and outlier prints)
     """
     g = bars.groupby("date")
     out = pd.DataFrame({"v_1m": g["volume"].sum(), "v_exec": g["exec_volume"].sum()})

@@ -5,7 +5,7 @@ title: "What does it cost to trade Mexican equities? An execution & TCA toolkit"
 # What does it cost to trade Mexican equities?
 
 *Draft write-up for emilio-pirez.github.io. Code, data and methodology:
-[github.com/emilio-pirez/equity-execution-tca-toolkit](https://github.com/emilio-pirez/equity-execution-tca-toolkit).*
+[github.com/emilio-pirez/equity-execution-tca-toolkit](https://github.com/emilio-pirez/equity-execution-tca-toolkit) · Live dashboard: [equity-execution-tca-toolkit.streamlit.app](https://equity-execution-tca-toolkit.streamlit.app/).*
 
 An execution trader's job is to turn a portfolio manager's order into fills at the lowest
 total cost: the spread you pay, the price you push, and the market drift you're exposed to
@@ -26,8 +26,8 @@ a TCA breakdown into spread, impact, timing and opportunity cost.
    costs ~41 bps in Banorte or Walmex, about the same as Apple (38). But 5% of ADV is roughly
    USD 2m in a typical Mexican name versus hundreds of millions in the US.
 2. *Depth differs by ~400x.* Per basis point of 1-minute price move, US names absorb about 400
-   times more dollars. Only about half of a Mexican name's daily volume trades on the lit
-   continuous book. The rest goes through auctions and block crosses.
+   times more dollars. Only about half of a Mexican name's daily volume shows up on the lit
+   continuous book. The rest goes through auctions and very large prints, most likely block crosses.
 3. *Avoid the open.* Estimated spreads in the first 30 minutes are 1.6x the midday level in Mexico
    and 3.2x in the US, while volume builds into the close.
 4. *Urgency has a price.* For a 10%-ADV Banorte order, front-loading (Almgren-Chriss urgency 3)
@@ -37,7 +37,9 @@ a TCA breakdown into spread, impact, timing and opportunity cost.
    badly when a stock trades only a few times a minute. That is exactly the case in less
    liquid Mexican names. Validating it against Bloomberg quoted spreads is the next step.
 
-**Caveats.** Spreads are estimated, impact is modeled rather than observed, and the sample
+**Caveats.** Absolute cost levels are conservative upper bounds: every child order crosses
+the spread and the impact coefficient is a literature prior, so the comparisons matter more than
+the levels. Spreads are estimated, impact is modeled rather than observed, and the sample
 is about 20 sessions of 1-minute bars. Public data also lacks BMV's last trading hour after
 the US daylight-saving switch. The value is in the method and the traceability, not in any
 single number.

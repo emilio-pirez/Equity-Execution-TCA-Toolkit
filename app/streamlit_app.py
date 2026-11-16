@@ -74,7 +74,7 @@ with tabs[0]:
             "usd_per_bp_1m": "{:,.0f}", "daily_vol_bps": "{:.0f}", "pct_minutes_traded": "{:.0%}",
             "coverage_exec_vs_daily": "{:.0%}"}), hide_index=True, width="stretch")
         st.caption("coverage_exec_vs_daily: share of official daily volume visible as executable continuous-session "
-                   "1-min volume (excludes auctions, block crosses / bad prints, and BMV's last hour missing in yfinance).")
+                   "1-min volume (excludes auctions, outlier prints (likely block crosses / bad prints), and BMV's last hour missing in yfinance).")
 
 # ---------------------------------------------------------------- Pre-trade
 with tabs[1]:

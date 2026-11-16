@@ -56,7 +56,7 @@ def enrich_bars(df: pd.DataFrame, market: str | None = None, ticker: str | None 
     is_open_auction    first bar of the day (contains the opening auction print)
     is_close_auction   bars at/after the official continuous close (closing auction prints)
     is_continuous      not an auction bar
-    vol_outlier        volume > 25x the day's median positive 1m volume (block cross / bad print)
+    vol_outlier        volume > 25x the day's median positive 1m volume (likely block cross or bad print)
     exec_volume        volume an algorithm could plausibly participate in: 0 for outliers
                        and auction bars, else volume
     """

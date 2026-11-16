@@ -61,7 +61,7 @@ def build(liq, costs, prof, dq, syn, frontier, ac_sim, sens, bbg_val, ac_ticker)
             "(US estimates are upper bounds: at 1-min frequency Corwin-Schultz is inflated by intra-minute volatility; "
             "a 1-cent quote on AAPL is ~0.3 bps).",
             f"- Only {m.loc['MX', 'exec_cov'] * 100:.0f}% of MX official daily volume is visible as executable continuous-session "
-            f"volume in yfinance bars (US: {m.loc['US', 'exec_cov'] * 100:.0f}%): the rest is auctions, block crosses and, "
+            f"volume in yfinance bars (US: {m.loc['US', 'exec_cov'] * 100:.0f}%): the rest is auctions, very large prints (likely block crosses) and, "
             "for BMV, the last trading hour that yfinance does not serve.",
             f"- Same %ADV costs about the same in the square-root model when volatility is similar - but 5% of ADV is "
             f"USD {m.loc['MX', 'adv_usd_m'] * 0.05:,.1f}m in the median MX name vs USD {m.loc['US', 'adv_usd_m'] * 0.05:,.0f}m in the US.", ""]
