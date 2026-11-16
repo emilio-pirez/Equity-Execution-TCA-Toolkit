@@ -1,0 +1,15 @@
+[project]
+name = "equity-execution-tca"
+version = "0.1.0"
+description = "Best-execution, liquidity and TCA toolkit for Mexican (BMV) and US equities/ETFs"
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

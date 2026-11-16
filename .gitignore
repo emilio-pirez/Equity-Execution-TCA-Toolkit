@@ -1,0 +1,14 @@
+# Bloomberg data is licensed: never commit raw bars (only aggregated validation stats)
+data/raw/
+!data/raw/bbg/.gitkeep
+# Build artifact: recreate with `python -m src.pipeline`
+data/tca.db
+# Python / tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.DS_Store

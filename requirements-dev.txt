@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest>=8
+kaleido>=1.0        # static PNG export of charts (uses a local Chrome/Chromium)
+nbformat>=5.10
+nbconvert>=7.16
+ipykernel>=6.29
